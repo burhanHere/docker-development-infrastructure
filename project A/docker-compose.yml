@@ -1,0 +1,32 @@
+services:
+  project-A-backend:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: project-A-backend
+
+    working_dir: /usr/src
+
+    env_file:
+      - .env
+
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=1000
+        
+    volumes:
+      - .:/usr/src
+      - /usr/src/node_modules
+
+    command: npm run start:debug
+
+    ports:
+      - "${NODE_HOST_PORT}:${PORT}"
+      - "9229:9229"
+
+    networks:
+      - development-network
+
+networks:
+  development-network:
+    external: true
